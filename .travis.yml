@@ -1,0 +1,12 @@
+language: java
+sudo: false
+dist: trusty
+
+script:
+  - make build
+
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
