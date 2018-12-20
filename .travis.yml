@@ -16,8 +16,8 @@ jobs:
         - docker push $DOCKER_USERNAME/gradle-docker-pipeline:pending
     - stage: acceptance testing
       script:
-        - docker pull $DOCKER_USERNAME/maven-docker-pipeline:pending
-        - docker tag $DOCKER_USERNAME/maven-docker-pipeline:pending maven-docker-pipeline:latest
+        - docker pull $DOCKER_USERNAME/gradle-docker-pipeline:pending
+        - docker tag $DOCKER_USERNAME/gradle-docker-pipeline:pending gradle-docker-pipeline:latest
         - make test
     - stage: promote image
       script:
