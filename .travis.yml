@@ -14,6 +14,11 @@ jobs:
         - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
         - docker tag gradle-docker-pipeline:latest $DOCKER_USERNAME/gradle-docker-pipeline:pending
         - docker push $DOCKER_USERNAME/gradle-docker-pipeline:pending
+    - stage: acceptance testing
+      script:
+        - docker pull $DOCKER_USERNAME/maven-docker-pipeline:pending
+        - docker tag $DOCKER_USERNAME/maven-docker-pipeline:pending maven-docker-pipeline:latest
+        - make test
     - stage: promote image
       script:
         - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
