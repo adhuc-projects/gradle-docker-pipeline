@@ -4,6 +4,7 @@ plugins {
 	id 'org.springframework.boot' version '2.1.1.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 	id "com.palantir.docker" version "0.20.1"
+	id 'com.avast.gradle.docker-compose' version '0.7.1'
 }
 
 group = 'org.adhuc.sample'
@@ -48,6 +49,7 @@ task acceptance(type: Test) {
 	testClassesDirs = sourceSets.acceptance.output.classesDirs
 	classpath = sourceSets.acceptance.runtimeClasspath
 }
+dockerCompose.isRequiredBy(acceptance)
 
 bootJar {
 	archiveName = "${rootProject.name}.jar"
@@ -57,4 +59,8 @@ docker {
 	name "${rootProject.name}:latest"
 	files tasks.bootJar.outputs
 	copySpec.into("build")
+}
+
+dockerCompose {
+	useComposeFiles = ['docker/docker-compose.yml']
 }

@@ -6,7 +6,7 @@ services:
     ports:
       - 8080:8080
     healthcheck:
-      test: wget -O /dev/null http://localhost:8080/health > /dev/null
+      test: curl -f http://localhost:8080/actuator/health || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
