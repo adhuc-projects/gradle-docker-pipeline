@@ -10,7 +10,7 @@ jobs:
   include:
     - stage: commit stage
       script:
-        - make build
+        - make clean && make build
         - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
         - docker tag gradle-docker-pipeline:latest $DOCKER_USERNAME/gradle-docker-pipeline:pending
         - docker push $DOCKER_USERNAME/gradle-docker-pipeline:pending
