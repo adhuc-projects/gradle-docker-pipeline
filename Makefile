@@ -5,7 +5,11 @@ else
 endif
 
 build: ## Build the application
-	$(gradle) test bootJar docker
+	$(gradle) test
+	$(gradle) bootJar docker
+
+test: ## Run acceptance testing
+	$(gradle) acceptance
 
 run: ## Run the application
 	$(gradle) bootRun

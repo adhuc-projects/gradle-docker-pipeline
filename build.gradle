@@ -14,6 +14,22 @@ repositories {
 	mavenCentral()
 }
 
+sourceSets {
+	acceptance {
+		java {
+			compileClasspath += main.compileClasspath + test.compileClasspath + main.output + test.output
+			runtimeClasspath += main.runtimeClasspath + test.runtimeClasspath + main.output + test.output
+			srcDir file('src/acceptance/java')
+		}
+		resources.srcDir file('src/acceptance/resources')
+	}
+}
+
+configurations {
+	acceptanceTestCompile.extendsFrom testCompile
+	acceptanceTestRuntime.extendsFrom testRuntime
+}
+
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-actuator')
 	implementation('org.springframework.boot:spring-boot-starter-web')
@@ -24,6 +40,13 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+task acceptance(type: Test) {
+	useJUnitPlatform()
+	outputs.upToDateWhen { false }
+	testClassesDirs = sourceSets.acceptance.output.classesDirs
+	classpath = sourceSets.acceptance.runtimeClasspath
 }
 
 bootJar {
