@@ -4,7 +4,7 @@ else
 	gradle = ./gradlew
 endif
 
-build: ## Build the application
+build: clean ## Build the application
 	$(gradle) test
 	$(gradle) bootJar docker
 
