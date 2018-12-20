@@ -4,7 +4,7 @@ services:
     container_name: gradle-docker-pipeline
     image: gradle-docker-pipeline:latest
     ports:
-      - 8080:8080
+      - 8080
     healthcheck:
       test: curl -f http://localhost:8080/actuator/health || exit 1
       interval: 10s
