@@ -1,11 +1,26 @@
 language: java
 jdk: openjdk11
-sudo: false
+sudo: required
 dist: trusty
 
-script:
-  - make build
+services:
+  - docker
 
+jobs:
+  include:
+    - stage: commit stage
+      script:
+        - make build
+        - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+        - docker tag gradle-docker-pipeline:latest $DOCKER_USERNAME/gradle-docker-pipeline:pending
+        - docker push $DOCKER_USERNAME/gradle-docker-pipeline:pending
+    - stage: promote image
+      script:
+        - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+        - docker pull $DOCKER_USERNAME/gradle-docker-pipeline:pending
+        - docker tag $DOCKER_USERNAME/gradle-docker-pipeline:pending $DOCKER_USERNAME/gradle-docker-pipeline:latest
+        - docker tag $DOCKER_USERNAME/gradle-docker-pipeline:pending $DOCKER_USERNAME/gradle-docker-pipeline:$TRAVIS_BUILD_NUMBER
+        - docker push $DOCKER_USERNAME/gradle-docker-pipeline:latest
 
 notifications:
   email:
