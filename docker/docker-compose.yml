@@ -1,0 +1,12 @@
+version: '3'
+services:
+  gradle-docker-pipeline:
+    container_name: gradle-docker-pipeline
+    image: gradle-docker-pipeline:latest
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: wget -O /dev/null http://localhost:8080/health > /dev/null
+      interval: 10s
+      timeout: 5s
+      retries: 3

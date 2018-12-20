@@ -14,6 +14,12 @@ test: ## Run acceptance testing
 run: ## Run the application
 	$(gradle) bootRun
 
+up: ## Start the application and its dependencies
+	docker-compose -f docker/docker-compose.yml up -d
+
+down: ## Stop the application and its dependencies
+	docker-compose -f docker/docker-compose.yml down
+
 clean: ## Clean the project folder
 	$(gradle) clean dockerClean
 
