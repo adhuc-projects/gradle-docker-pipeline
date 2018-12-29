@@ -14,19 +14,18 @@ jobs:
       script:
         - make clean && make build
         - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-        - docker tag gradle-docker-pipeline:latest $DOCKER_USERNAME/gradle-docker-pipeline:pending
-        - docker push $DOCKER_USERNAME/gradle-docker-pipeline:pending
+        - docker tag gradle-docker-pipeline:latest $DOCKER_USERNAME/gradle-docker-pipeline:$TRAVIS_BUILD_NUMBER
+        - docker push $DOCKER_USERNAME/gradle-docker-pipeline:$TRAVIS_BUILD_NUMBER
     - stage: acceptance testing
       script:
-        - docker pull $DOCKER_USERNAME/gradle-docker-pipeline:pending
-        - docker tag $DOCKER_USERNAME/gradle-docker-pipeline:pending gradle-docker-pipeline:latest
+        - docker pull $DOCKER_USERNAME/gradle-docker-pipeline:$TRAVIS_BUILD_NUMBER
+        - docker tag $DOCKER_USERNAME/gradle-docker-pipeline:$TRAVIS_BUILD_NUMBER gradle-docker-pipeline:latest
         - make test
     - stage: promote image
       script:
         - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-        - docker pull $DOCKER_USERNAME/gradle-docker-pipeline:pending
-        - docker tag $DOCKER_USERNAME/gradle-docker-pipeline:pending $DOCKER_USERNAME/gradle-docker-pipeline:latest
-        - docker tag $DOCKER_USERNAME/gradle-docker-pipeline:pending $DOCKER_USERNAME/gradle-docker-pipeline:$TRAVIS_BUILD_NUMBER
+        - docker pull $DOCKER_USERNAME/gradle-docker-pipeline:$TRAVIS_BUILD_NUMBER
+        - docker tag $DOCKER_USERNAME/gradle-docker-pipeline:$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/gradle-docker-pipeline:latest
         - docker push $DOCKER_USERNAME/gradle-docker-pipeline:latest
 
 notifications:
