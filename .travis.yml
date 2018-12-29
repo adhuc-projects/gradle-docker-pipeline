@@ -6,6 +6,8 @@ dist: trusty
 services:
   - docker
 
+install: true
+
 jobs:
   include:
     - stage: commit stage
